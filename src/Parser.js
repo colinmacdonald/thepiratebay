@@ -22,8 +22,12 @@ export function _parseTorrentIsTrusted(element: Object) {
   );
 }
 
-export function isTorrentVerified(element: Object) {
-  return _parseTorrentIsVIP(element) || _parseTorrentIsTrusted(element);
+export function isTorrentVIP(element: Object) {
+  return _parseTorrentIsVIP(element);
+}
+
+export function isTorrentTrusted(element: Object) {
+  return _parseTorrentIsTrusted(element);
 }
 
 export async function getProxyList() {
@@ -87,7 +91,8 @@ export function parseResults(resultsHTML: string, filter: Object = {}) {
     const magnetLink = $(this).find('a[title="Download this torrent using magnet"]').attr('href');
     const uploader = $(this).find('font .detDesc').text();
     const uploaderLink = baseUrl + $(this).find('font a').attr('href');
-    const verified = isTorrentVerified($(this));
+    const vip = isTorrentVip($(this));
+    const trusted = isTorrentTrusted($(this));
 
     const category = {
       id: $(this)
@@ -119,7 +124,8 @@ export function parseResults(resultsHTML: string, filter: Object = {}) {
       magnetLink,
       subcategory,
       uploader,
-      verified,
+      vip,
+      trusted,
       uploaderLink
     };
   });
@@ -129,11 +135,17 @@ export function parseResults(resultsHTML: string, filter: Object = {}) {
       .get()
       .filter(result => !result.uploaderLink.includes('undefined'));
 
-  if (filter.verified === true) {
-    return parsedResultsArray.filter(result => result.verified === true);
+  var out = parsedResultsArray;
+
+  if (filter.vip === true) {
+    out = parsedResultsArray.filter(result => result.vip === true);
   }
 
-  return parsedResultsArray;
+  if (filter.trusted === true) {
+    out = parsedResultsArray.filter(result => result.vip === true);
+  }
+
+  return out;
 }
 
 export function parseTvShow(tvShowPage: string) {
