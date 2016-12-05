@@ -18,7 +18,8 @@ const searchDefaults = {
   category: '0',
   page: '0',
   filter: {
-    verified: false
+    vip: false,
+    trusted: false
   },
   orderBy: 'seeds',
   sortBy: 'desc'

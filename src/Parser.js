@@ -91,7 +91,7 @@ export function parseResults(resultsHTML: string, filter: Object = {}) {
     const magnetLink = $(this).find('a[title="Download this torrent using magnet"]').attr('href');
     const uploader = $(this).find('font .detDesc').text();
     const uploaderLink = baseUrl + $(this).find('font a').attr('href');
-    const vip = isTorrentVip($(this));
+    const vip = isTorrentVIP($(this));
     const trusted = isTorrentTrusted($(this));
 
     const category = {
